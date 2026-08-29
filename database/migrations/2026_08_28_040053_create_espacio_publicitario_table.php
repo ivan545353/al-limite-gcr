@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('espacio_publicitario', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->tinyIncrements('id_espacio');
+            $table->string('clave', 50);
+            $table->string('nombre', 100);
+            $table->text('codigo')->nullable();
+            $table->boolean('activo')->default(false);
+            $table->dateTime('fecha_modificacion')->nullable();
+
+            $table->unique('clave', 'uq_espacio_clave');
         });
     }
 

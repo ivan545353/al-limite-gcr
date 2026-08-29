@@ -11,9 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('envio_newsletter', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+       Schema::create('envio_newsletter', function (Blueprint $table) {
+            $table->increments('id_envio');
+            $table->dateTime('fecha_programada');
+            $table->dateTime('fecha_envio')->nullable();
+            $table->enum('estado', ['PENDIENTE', 'ENVIADO', 'FALLIDO'])->default('PENDIENTE');
+            $table->unsignedInteger('cantidad_destinatarios')->nullable();
+            $table->string('id_mensaje_proveedor', 120)->nullable();
+            $table->text('detalle_error')->nullable();
+
+            $table->unique('fecha_programada', 'uq_envio_fecha');
+            $table->index(['estado', 'fecha_programada'], 'idx_envio_estado');
         });
     }
 
